@@ -5,7 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
+
+import ar.edu.unrc.game2048.Board.Position;
 
 public class BoardTest{
 
@@ -60,6 +65,72 @@ public class BoardTest{
     }
 
     @Test
+    public void TestSetCell(){
+        Board board = new Board(4);
+        Cell cell = new Cell(8);
+        assertThrows(IndexOutOfBoundsException.class, () -> board.setCell(22, 67, cell));
+    }
+
+    @Test
+    public void TestGetEmptyPositions(){
+        Board board = emptyBoard(2);
+        Cell Cell1 = new Cell(2);
+        Cell Cell2 = new Cell(2);
+        board.setCell(0, 0, Cell1);
+        board.setCell(0, 1, Cell2);
+        Set<Position> actual = board.getEmptyPositions();
+        Set<Position> expected = new HashSet<>();
+        expected.add(new Position(1,0));
+        expected.add(new Position(1,1));
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    public void TestHasEmptyCells(){
+        Board board = emptyBoard(4);
+        assertTrue(board.hasEmptyCells());
+    }
+
+    @Test
+    public void TestIsWinningBoard(){
+        Board board = new Board(4);
+        board.setCell(0, 0, new Cell(2048));
+    }
+
+    @Test
+    public void TestIsLosingBoard(){
+        Board board = new Board(4);
+        board.setCell(0, 0, new Cell(2));
+        board.setCell(1, 0, new Cell(4));
+        board.setCell(2, 0, new Cell(2));
+        board.setCell(3, 0, new Cell(4));
+        board.setCell(0, 1, new Cell(4));
+        board.setCell(1, 1, new Cell(2));
+        board.setCell(2, 1, new Cell(4));
+        board.setCell(3, 1, new Cell(2));
+        board.setCell(0, 2, new Cell(8));
+        board.setCell(1, 2, new Cell(4));
+        board.setCell(2, 2, new Cell(2));
+        board.setCell(3, 2, new Cell(4));
+        board.setCell(0, 3, new Cell(8));
+        board.setCell(1, 3, new Cell(2));
+        board.setCell(2, 3, new Cell(4));
+        board.setCell(3, 3, new Cell(2));
+        assertFalse(board.isLosingBoard());
+    }
+
+    @Test
+    public void TestIsFull(){
+        Board board = new Board(2);
+        board.setCell(0, 0, new Cell(2));
+        board.setCell(1, 0, new Cell(2));
+        board.setCell(0, 1, new Cell(2));
+        board.setCell(1, 1, new Cell(2));
+        assertTrue(board.isFull());
+    }
+
+    @Test
     public void TestMoveUp() {
         Board board = emptyBoard(4);
         board.setCell(2, 0, new Cell(2));
@@ -101,4 +172,6 @@ public class BoardTest{
         assertEquals(4, board.getCell(0, 3).getValue());
         assertEquals(4, board.getScore());
     }
+
+    
 }
