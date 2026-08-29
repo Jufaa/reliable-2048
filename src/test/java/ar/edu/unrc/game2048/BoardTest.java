@@ -80,4 +80,25 @@ public class BoardTest{
         assertEquals(4, board.getCell(3, 0).getValue());
         assertEquals(4, board.getScore());
     }
+    @Test
+    public void TestMoveLeft() {
+        Board board = emptyBoard(4);
+        board.setCell(0, 2, new Cell(2));
+        board.setCell(0, 3, new Cell(2));
+    
+        assertTrue(board.moveLeft());
+        assertEquals(4, board.getCell(0, 0).getValue());
+        assertEquals(4, board.getScore());
+    }
+    
+    @Test
+    public void TestMoveRight() {
+        Board board = emptyBoard(4);
+        board.setCell(0, 0, new Cell(2));
+        board.setCell(0, 1, new Cell(2));
+    
+        assertTrue(board.moveRight());
+        assertEquals(4, board.getCell(0, 3).getValue());
+        assertEquals(4, board.getScore());
+    }
 }
