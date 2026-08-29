@@ -2,6 +2,7 @@ package ar.edu.unrc.game2048;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -172,6 +173,63 @@ public class BoardTest{
         assertEquals(4, board.getCell(0, 3).getValue());
         assertEquals(4, board.getScore());
     }
-
     
+    @Test
+    public void TestEqualsForSameContent() {
+        Board original = new Board();
+        Board copy = new Board(original);
+        assertEquals(original, copy);
+    }
+
+    @Test
+    public void TestEqualsForDifferentSize() {
+        assertNotEquals(new Board(4), new Board(3));
+    }
+
+    @Test
+    public void TestHashCodeBoard() {
+        Board original = new Board();
+        Board copy = new Board(original);
+        assertEquals(original.hashCode(), copy.hashCode());
+    }
+
+    @Test
+    public void TestToStringScore() {
+        assertTrue(new Board().toString().contains("Score: 0"));
+    }
+
+    @Test
+    public void TestToStringCell() {
+        Board board = new Board();
+        board.setCell(0, 0, new Cell(128));
+        assertTrue(board.toString().contains("128"));
+    }
+    
+    @Test
+    public void TestPositionFields() {
+        Board.Position position = new Board.Position(1, 2);
+        assertEquals(1, position.row);
+        assertEquals(2, position.col);
+    }
+    
+    @Test
+    public void TestPositionEqualsForSameCoordinates() {
+        assertEquals(new Board.Position(1, 2), new Board.Position(1, 2));
+    }
+    
+    @Test
+    public void TestPositionEqualsForDifferentCoordinates() {
+        assertNotEquals(new Board.Position(1, 2), new Board.Position(2, 1));
+    }
+    
+    @Test
+    public void TestPositionHashCode() {
+        assertEquals(new Board.Position(1, 2).hashCode(), new Board.Position(1, 2).hashCode());
+    }
+    
+    @Test
+    public void TestPositionToString() {
+        assertEquals("(1, 2)", new Board.Position(1, 2).toString());
+    }
+        
 }
