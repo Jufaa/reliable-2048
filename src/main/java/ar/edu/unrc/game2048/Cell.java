@@ -1,7 +1,7 @@
 package ar.edu.unrc.game2048;
 
 import java.util.Objects;
-
+import java.lang.Math;
 /**
  * Represents a single cell in the 2048 game board.
  * A cell is either empty (value = 0) or contains a power of two (2, 4, 8, ...).
@@ -34,6 +34,12 @@ public final class Cell {
         if (value < 0) {
             throw new IllegalArgumentException("Cell value cannot be negative: " + value);
         }
+
+        int logValue = (int)(Math.log(value) / Math.log(2));
+        if (Math.pow(2, logValue) != value) {
+            throw new IllegalArgumentException("Cell value has to be a power of two: " + value);
+        }
+        
         this.value = value;
     }
     
