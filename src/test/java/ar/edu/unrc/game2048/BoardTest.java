@@ -9,6 +9,15 @@ import org.junit.jupiter.api.Test;
 
 public class BoardTest{
 
+    private Board emptyBoard(int size) {
+        Board board = new Board(size);
+            for (int row = 0; row < size; row++) {
+                for (int col = 0; col < size; col++) {
+                    board.setCell(row, col, Cell.EMPTY);
+            }
+        }
+        return board;
+    }
     @Test
     public void TestConstructorEmpty(){
         Board board = new Board();
@@ -30,4 +39,25 @@ public class BoardTest{
         assertTrue(boardToCopy.equals(copiedBoard));
     }
 
+    @Test
+    public void TestMoveUp() {
+        Board board = emptyBoard(4);
+        board.setCell(2, 0, new Cell(2));
+        board.setCell(3, 0, new Cell(2));
+
+        assertTrue(board.moveUp());
+        assertEquals(4, board.getCell(0, 0).getValue());
+        assertEquals(4, board.getScore());
+    }
+
+    @Test
+    public void TestMoveDown() {
+        Board board = emptyBoard(4);
+        board.setCell(0, 0, new Cell(2));
+        board.setCell(1, 0, new Cell(2));
+
+        assertTrue(board.moveDown());
+        assertEquals(4, board.getCell(3, 0).getValue());
+        assertEquals(4, board.getScore());
+    }
 }
