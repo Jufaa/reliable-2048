@@ -16,7 +16,7 @@ public class CellTest {
     }
 
     @Test
-    public void testConstructorFalla(){
+    public void testConstructorNumberNoPowerOfTwo(){
         assertThrows(IllegalArgumentException.class, () -> new Cell(5));
     }
     @Test
