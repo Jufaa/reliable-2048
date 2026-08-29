@@ -39,6 +39,26 @@ public class BoardTest{
         assertTrue(boardToCopy.equals(copiedBoard));
     }
 
+        @Test
+    public void TestGetSize(){
+        Board board = new Board(7);
+        assertEquals(7, board.getSize());
+    }
+
+    @Test
+    public void TestGetScore(){
+        Board board = new Board();
+        assertEquals(0, board.getScore());
+    }
+
+    @Test
+    public void TestGetCell(){
+        Board board = new Board(4);
+        Cell cell = new Cell(8);
+        board.setCell(3, 3, cell);
+        assertEquals(cell, board.getCell(3, 3));
+    }
+
     @Test
     public void TestMoveUp() {
         Board board = emptyBoard(4);
