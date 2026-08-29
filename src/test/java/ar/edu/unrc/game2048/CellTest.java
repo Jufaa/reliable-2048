@@ -16,6 +16,10 @@ public class CellTest {
     }
 
     @Test
+    public void testConstructorFalla(){
+        assertThrows(IllegalArgumentException.class, () -> new Cell(5));
+    }
+    @Test
     public void testConstructorNegative() {
         assertThrows(IllegalArgumentException.class, () -> new Cell(-4));
     }
