@@ -1,6 +1,7 @@
 package ar.edu.unrc.game2048;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -100,5 +101,31 @@ public class CellTest {
     @Test
     public void testToStringVacio() {
         assertEquals(".", Cell.EMPTY.toString());
+    }
+
+    @Test
+    public void testEqualsSameInstance() {
+        Cell cell = new Cell(4);
+        assertTrue(cell.equals(cell));
+    }
+
+    @Test
+    public void testEqualsDifferentValue() {
+        assertNotEquals(new Cell(2), new Cell(4));
+    }
+
+    @Test
+    public void testEqualsNull() {
+        assertFalse(new Cell(4).equals(null));
+    }
+
+    @Test
+    public void testEqualsDifferentClass() {
+        assertFalse(new Cell(4).equals("4"));
+    }
+
+    @Test
+    public void testHashCodeDiffersForDifferentValues() {
+        assertNotEquals(new Cell(2).hashCode(), new Cell(4).hashCode());
     }
 }

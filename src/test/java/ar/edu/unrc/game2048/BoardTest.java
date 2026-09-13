@@ -24,6 +24,16 @@ public class BoardTest{
         }
         return board;
     }
+    private Board boardFrom(int[][] values) {
+     Board board = new Board(values.length);
+     for (int row = 0; row < values.length; row++) {
+         for (int col = 0; col < values.length; col++) {
+             int value = values[row][col];
+             board.setCell(row, col, value == 0 ? Cell.EMPTY : new Cell(value));
+         }
+     }
+     return board;
+    }
     @Test
     public void TestConstructorEmpty(){
         Board board = new Board();
@@ -45,7 +55,12 @@ public class BoardTest{
         assertTrue(boardToCopy.equals(copiedBoard));
     }
 
-        @Test
+    @Test
+    public void TestConstructorSizeZero() {
+      assertThrows(IllegalArgumentException.class, () -> new Board(0));
+     }
+
+    @Test
     public void TestGetSize(){
         Board board = new Board(7);
         assertEquals(7, board.getSize());
@@ -96,7 +111,26 @@ public class BoardTest{
     @Test
     public void TestIsWinningBoard(){
         Board board = new Board(4);
-        board.setCell(0, 0, new Cell(2048));
+        board.setCell(0, 0, new Cell(Board.WINNING_VALUE));
+        assertTrue(board.isWinningBoard());
+    }
+
+    @Test
+    public void TestIsWinningBoardWithoutWinningValue(){
+        Board board = boardFrom(new int[][] {
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 2 },
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 2 },
+        });
+        assertFalse(board.isWinningBoard());
+    }
+
+    @Test
+    public void TestIsWinningBoardAtLastCell(){
+        Board board = emptyBoard(4);
+        board.setCell(3, 3, new Cell(Board.WINNING_VALUE));
+        assertTrue(board.isWinningBoard());
     }
 
     @Test
@@ -121,6 +155,38 @@ public class BoardTest{
         assertFalse(board.isLosingBoard());
     }
 
+    @Test
+    public void TestIsLosingBoardFullWithoutMerges() {
+        Board board = boardFrom(new int[][] {
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 2 },
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 2 },
+        });
+        assertTrue(board.isLosingBoard());
+    }
+
+    @Test
+    public void TestIsLosingBoardDetectsMergeInLastRowPair() {
+        Board board = boardFrom(new int[][] {
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 2 },
+            { 2, 4, 2, 8 },
+            { 4, 2, 4, 8 },
+        });
+        assertFalse(board.isLosingBoard());
+    }
+
+    @Test
+    public void TestIsLosingBoardWithEmptyCells() {
+        Board board = boardFrom(new int[][] {
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 2 },
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 0 },
+        });
+        assertFalse(board.isLosingBoard());
+    }
     @Test
     public void TestIsFull(){
         Board board = new Board(2);
@@ -174,6 +240,46 @@ public class BoardTest{
         assertEquals(4, board.getScore());
     }
     
+    @Test
+    public void TestMoveDownReturnsFalseWhenNothingMoves() {
+        Board board = boardFrom(new int[][] {
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 2 },
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 2 },
+        });
+        assertFalse(board.moveDown());
+    }
+    @Test
+    public void TestMoveRightReturnsFalseWhenNothingMoves() {
+        Board board = boardFrom(new int[][] {
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 2 },
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 2 },
+        });
+        assertFalse(board.moveRight());
+    }
+    @Test
+    public void TestMoveLeftReturnsFalseWhenNothingMoves() {
+        Board board = boardFrom(new int[][] {
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 2 },
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 2 },
+        });
+        assertFalse(board.moveLeft());
+    }
+    @Test
+    public void TestMoveUpReturnsFalseWhenNothingMoves() {
+        Board board = boardFrom(new int[][] {
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 2 },
+            { 2, 4, 2, 4 },
+            { 4, 2, 4, 2 },
+        });
+        assertFalse(board.moveUp());
+    }
     @Test
     public void TestEqualsForSameContent() {
         Board original = new Board();
@@ -231,5 +337,68 @@ public class BoardTest{
     public void TestPositionToString() {
         assertEquals("(1, 2)", new Board.Position(1, 2).toString());
     }
-        
+      
+    @Test
+    public void TestIsFullWithEmptyCells() {
+        Board board = emptyBoard(4);
+        assertFalse(board.isFull());
+    }
+
+    @Test
+    public void TestEqualsSameInstance() {
+        Board board = new Board();
+        assertTrue(board.equals(board));
+    }
+
+    @Test
+    public void TestEqualsNull() {
+        assertFalse(new Board().equals(null));
+    }
+
+    @Test
+    public void TestEqualsDifferentClass() {
+        assertFalse(new Board().equals("board"));
+    }
+
+    @Test
+    public void TestHashCodeDiffersForDifferentBoards() {
+        Board a = emptyBoard(4);
+        Board b = emptyBoard(4);
+        b.setCell(0, 0, new Cell(2));
+        assertNotEquals(a.hashCode(), b.hashCode());
+    }
+
+    @Test
+    public void TestPositionEqualsSameInstance() {
+        Position p = new Position(1, 2);
+        assertTrue(p.equals(p));
+    }
+
+    @Test
+    public void TestPositionEqualsNull() {
+        assertFalse(new Position(1, 2).equals(null));
+    }
+
+    @Test
+    public void TestPositionEqualsDifferentClass() {
+        assertFalse(new Position(1, 2).equals("(1, 2)"));
+    }
+
+    @Test
+    public void TestPositionHashCodeDiffersForDifferentCoordinates() {
+        assertNotEquals(new Position(1, 2).hashCode(), new Position(2, 1).hashCode());
+    }
+    @Test
+    public void TestToStringFullLayout() {
+        Board board = emptyBoard(2);
+        String expected =
+                "Score: 0\n" +
+                "+-----+-----+\n" +
+                "|     |     |\n" +
+                "+-----+-----+\n" +
+                "|     |     |\n" +
+                "+-----+-----+\n";
+        assertEquals(expected, board.toString());
+    }
+
 }
