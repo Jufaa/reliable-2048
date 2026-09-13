@@ -24,6 +24,11 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.10</version>
+                <configuration>
+                    <excludes>
+                        <exclude>ar/edu/unrc/game2048/MainCLI.class</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -61,6 +66,9 @@
                     <targetClasses>
                         <param>ar.edu.unrc.game2048.*</param>
                     </targetClasses>
+                    <excludedClasses>
+                        <param>ar.edu.unrc.game2048.MainCLI</param>
+                    </excludedClasses>
                     <targetTests>
                         <param>ar.edu.unrc.game2048.*Test</param>
                         <param>ar.edu.unrc.game2048.*Tests</param>
