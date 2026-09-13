@@ -217,7 +217,7 @@ public class Board {
             for (int c = 0; c < size; c++) {
                 Cell current = grid[r][c];
                 // Check right neighbor
-                if (c + 1 < size - 1 && current.canMergeWith(grid[r][c + 1])) {
+                if (c + 1 < size && current.canMergeWith(grid[r][c + 1])) {
                     return false;
                 }
                 // Check down neighbor
@@ -310,7 +310,7 @@ public class Board {
         for (int col = 0; col < size; col++) {
             // Create a list of cells from bottom to top (reverse order)
             List<Cell> column = new ArrayList<>();
-            for (int row = size - 1; row > 0; row--) {
+            for (int row = size - 1; row >= 0; row--) {
                 column.add(grid[row][col]);
             }
 
