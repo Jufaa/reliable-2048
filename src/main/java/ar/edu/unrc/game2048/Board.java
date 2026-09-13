@@ -551,6 +551,17 @@ public class Board {
         return sb.toString();
     }
 
+    public boolean repOK() {
+        if (size <= 0 || grid == null || grid.length != size) return false;
+        for (int r = 0; r < size; r++) {
+            if (grid[r] == null || grid[r].length != size) return false;
+            for (int c = 0; c < size; c++) {
+                if (grid[r][c] == null || !grid[r][c].repOK()) return false;
+            }
+        }
+        return score >= 0;
+    }
+
     // ==================== INNER CLASSES ====================
 
     /**
