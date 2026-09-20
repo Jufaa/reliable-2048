@@ -1,6 +1,7 @@
 package ar.edu.unrc.game2048;
 
 import java.util.Objects;
+
 import java.lang.Math;
 /**
  * Represents a single cell in the 2048 game board.

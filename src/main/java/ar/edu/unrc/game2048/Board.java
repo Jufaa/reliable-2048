@@ -48,6 +48,9 @@ public class Board {
         this(DEFAULT_SIZE);
     }
 
+
+    private Random rng = new Random(67);
+    
     /**
      * Creates a new board of the specified size with two random tiles.
      *
@@ -486,13 +489,13 @@ public class Board {
         if (empty.isEmpty()) {
             return false;
         }
-
+        
         // Choose random position
-        int randomIndex = (int) (Math.random() * empty.size());
+        int randomIndex = rng.nextInt(empty.size());
         Position pos = empty.stream().skip(randomIndex).findFirst().get();
-
+        
         // 90% chance of 2, 10% chance of 4 (standard 2048 rules)
-        int value = Math.random() < 0.9 ? 2 : 4;
+        int value = rng.nextDouble() < 0.9 ? 2: 4;
         grid[pos.row][pos.col] = new Cell(value);
 
         return true;
